@@ -1,17 +1,41 @@
-import { Room, Ticket, TicketStatus, Urgency, Impact, Role } from './types';
+// src/constants.ts
+
+import {
+  Room,
+  Ticket,
+  TicketStatus,
+  Urgency,
+  Impact,
+  Role,
+  InventoryPart,
+  PurchaseOrder,
+  POStatus,
+} from './types';
 
 export const ROOMS: Room[] = Array.from({ length: 20 }, (_, i) => ({
   number: (101 + i).toString(),
   floor: 1,
-  type: i % 3 === 0 ? 'Suite' : i % 2 === 0 ? 'Deluxe' : 'Standard'
+  type: i % 3 === 0 ? 'Suite' : i % 2 === 0 ? 'Deluxe' : 'Standard',
 }));
 
 export const ASSETS = [
-  'Aire Acondicionado', 'Plomería', 'Eléctrico', 'TV/WiFi', 'Mobiliario', 'Cerrajería', 'Otros'
+  'Aire Acondicionado',
+  'Plomería',
+  'Eléctrico',
+  'TV/WiFi',
+  'Mobiliario',
+  'Cerrajería',
+  'Otros',
 ];
 
 export const ISSUE_TYPES = [
-  'No enciende', 'Gotea', 'Ruido extraño', 'Roto/Dañado', 'Sucio/Manchado', 'Sin señal', 'Mal olor'
+  'No enciende',
+  'Gotea',
+  'Ruido extraño',
+  'Roto/Dañado',
+  'Sucio/Manchado',
+  'Sin señal',
+  'Mal olor',
 ];
 
 // Helper to generate a past date
@@ -20,6 +44,124 @@ const daysAgo = (days: number) => {
   d.setDate(d.getDate() - days);
   return d.toISOString();
 };
+
+// =========================
+// DEMO: Inventario Refacciones
+// =========================
+
+export const INITIAL_PARTS: InventoryPart[] = [
+  {
+    id: 'P-001',
+    name: 'Outlet Universal Premium Blanco',
+    category: 'Eléctrico',
+    unit: 'pza',
+    stockOnHand: 0,
+    stockReserved: 1,
+    minStock: 2,
+    preferredVendor: 'Ferretería Local (DEMO)',
+    leadTimeDays: 2,
+    location: 'Bodega • Anaquel E-2',
+    sku: 'ELE-OUT-UNI-WHT',
+  },
+  {
+    id: 'P-002',
+    name: 'Empaque Lavabo 1/2" (Kit)',
+    category: 'Plomería',
+    unit: 'kit',
+    stockOnHand: 3,
+    stockReserved: 0,
+    minStock: 4,
+    preferredVendor: 'Plomería Express (DEMO)',
+    leadTimeDays: 1,
+    location: 'Bodega • Anaquel P-1',
+    sku: 'PLO-EMP-12-KIT',
+  },
+  {
+    id: 'P-003',
+    name: 'Baterías AA Alcalinas (Pack 4)',
+    category: 'Cerrajería',
+    unit: 'pza',
+    stockOnHand: 6,
+    stockReserved: 0,
+    minStock: 4,
+    preferredVendor: 'Mayorista Consumibles (DEMO)',
+    leadTimeDays: 1,
+    location: 'Almacén • Gabinete C-1',
+    sku: 'CON-AA-4PK',
+  },
+  {
+    id: 'P-004',
+    name: 'Control Remoto Aire Acondicionado (Universal)',
+    category: 'HVAC',
+    unit: 'pza',
+    stockOnHand: 1,
+    stockReserved: 0,
+    minStock: 2,
+    preferredVendor: 'Proveedor HVAC (DEMO)',
+    leadTimeDays: 3,
+    location: 'Bodega • Anaquel H-3',
+    sku: 'HVAC-CTRL-UNI',
+  },
+  {
+    id: 'P-005',
+    name: 'Manguera Drenaje Condensados (2m)',
+    category: 'HVAC',
+    unit: 'pza',
+    stockOnHand: 2,
+    stockReserved: 0,
+    minStock: 2,
+    preferredVendor: 'Proveedor HVAC (DEMO)',
+    leadTimeDays: 3,
+    location: 'Bodega • Anaquel H-2',
+    sku: 'HVAC-DRN-2M',
+  },
+  {
+    id: 'P-006',
+    name: 'Foco LED E27 9W Luz Cálida',
+    category: 'Eléctrico',
+    unit: 'pza',
+    stockOnHand: 5,
+    stockReserved: 0,
+    minStock: 6,
+    preferredVendor: 'Ferretería Local (DEMO)',
+    leadTimeDays: 1,
+    location: 'Bodega • Anaquel E-1',
+    sku: 'ELE-FOC-E27-9W',
+  },
+  {
+    id: 'P-007',
+    name: 'Chapa Electrónica — Batería Pack Servicio',
+    category: 'Cerrajería',
+    unit: 'kit',
+    stockOnHand: 1,
+    stockReserved: 0,
+    minStock: 2,
+    preferredVendor: 'Seguridad Accesos (DEMO)',
+    leadTimeDays: 4,
+    location: 'Almacén • Gabinete S-2',
+    sku: 'CER-LOCK-BATT-KIT',
+  },
+  {
+    id: 'P-008',
+    name: 'Pegamento Industrial (Cartucho)',
+    category: 'Mobiliario',
+    unit: 'pza',
+    stockOnHand: 2,
+    stockReserved: 0,
+    minStock: 1,
+    preferredVendor: 'Ferretería Local (DEMO)',
+    leadTimeDays: 1,
+    location: 'Bodega • Anaquel M-1',
+    sku: 'MOB-PEG-IND',
+  },
+];
+
+// DEMO: Órdenes de compra (inician vacías)
+export const INITIAL_POS: PurchaseOrder[] = [];
+
+// =========================
+// DEMO: Tickets
+// =========================
 
 export const INITIAL_TICKETS: Ticket[] = [
   {
@@ -36,7 +178,7 @@ export const INITIAL_TICKETS: Ticket[] = [
     createdBy: Role.RECEPTION,
     notes: [],
     history: [{ date: daysAgo(0), action: 'Ticket creado', user: Role.RECEPTION }],
-    priorityScore: 0
+    priorityScore: 0,
   },
   {
     id: 'T-1002',
@@ -54,9 +196,9 @@ export const INITIAL_TICKETS: Ticket[] = [
     notes: ['Se requiere cambiar empaque.'],
     history: [
       { date: daysAgo(2), action: 'Ticket creado', user: Role.CLEANING },
-      { date: daysAgo(1), action: 'Asignado a Carlos M.', user: Role.MAINTENANCE }
+      { date: daysAgo(1), action: 'Asignado a Carlos M.', user: Role.MAINTENANCE },
     ],
-    priorityScore: 0
+    priorityScore: 0,
   },
   {
     id: 'T-1003',
@@ -71,13 +213,18 @@ export const INITIAL_TICKETS: Ticket[] = [
     createdAt: daysAgo(1),
     createdBy: Role.RECEPTION,
     notes: ['Desconectado circuito por seguridad.', 'Solicitado reemplazo.'],
+
+    // Inventario DEMO (vínculo real)
     needsPart: true,
+    partId: 'P-001',
     partName: 'Outlet Universal Premium Blanco',
+    partQty: 1,
+
     history: [
       { date: daysAgo(1), action: 'Ticket creado', user: Role.RECEPTION },
-      { date: daysAgo(0), action: 'Marcado espera refacción', user: Role.MAINTENANCE }
+      { date: daysAgo(0), action: 'Marcado espera refacción', user: Role.MAINTENANCE },
     ],
-    priorityScore: 0
+    priorityScore: 0,
   },
   {
     id: 'T-1004',
@@ -94,9 +241,9 @@ export const INITIAL_TICKETS: Ticket[] = [
     notes: ['Reparado con pegamento industrial.'],
     history: [
       { date: daysAgo(5), action: 'Ticket creado', user: Role.CLEANING },
-      { date: daysAgo(2), action: 'Resuelto', user: Role.MAINTENANCE }
+      { date: daysAgo(2), action: 'Resuelto', user: Role.MAINTENANCE },
     ],
-    priorityScore: 0
+    priorityScore: 0,
   },
   {
     id: 'T-1005',
@@ -112,7 +259,7 @@ export const INITIAL_TICKETS: Ticket[] = [
     createdBy: Role.CLEANING,
     notes: [],
     history: [{ date: daysAgo(0), action: 'Ticket creado', user: Role.CLEANING }],
-    priorityScore: 0
+    priorityScore: 0,
   },
   {
     id: 'T-1006',
@@ -130,9 +277,9 @@ export const INITIAL_TICKETS: Ticket[] = [
     createdBy: Role.MAINTENANCE,
     notes: ['Reinicio no funciona. Escalado a proveedor.'],
     history: [{ date: daysAgo(3), action: 'Ticket creado y escalado', user: Role.MAINTENANCE }],
-    priorityScore: 0
+    priorityScore: 0,
   },
-    {
+  {
     id: 'T-1007',
     roomNumber: '115',
     isOccupied: true,
@@ -146,7 +293,7 @@ export const INITIAL_TICKETS: Ticket[] = [
     createdBy: Role.RECEPTION,
     notes: [],
     history: [{ date: daysAgo(0), action: 'Ticket creado', user: Role.RECEPTION }],
-    priorityScore: 0
+    priorityScore: 0,
   },
   {
     id: 'T-1008',
@@ -164,13 +311,13 @@ export const INITIAL_TICKETS: Ticket[] = [
     closedAt: daysAgo(1),
     notes: ['Baterías cambiadas.'],
     history: [
-        { date: daysAgo(6), action: 'Ticket creado', user: Role.CLEANING },
-        { date: daysAgo(2), action: 'Resuelto', user: Role.MAINTENANCE },
-        { date: daysAgo(1), action: 'Verificado', user: Role.MANAGEMENT }
+      { date: daysAgo(6), action: 'Ticket creado', user: Role.CLEANING },
+      { date: daysAgo(2), action: 'Resuelto', user: Role.MAINTENANCE },
+      { date: daysAgo(1), action: 'Verificado', user: Role.MANAGEMENT },
     ],
-    priorityScore: 0
+    priorityScore: 0,
   },
-   {
+  {
     id: 'T-1009',
     roomNumber: '109',
     isOccupied: true,
@@ -184,6 +331,6 @@ export const INITIAL_TICKETS: Ticket[] = [
     createdBy: Role.CLEANING,
     notes: [],
     history: [{ date: daysAgo(1), action: 'Ticket creado', user: Role.CLEANING }],
-    priorityScore: 0
-  }
+    priorityScore: 0,
+  },
 ];
